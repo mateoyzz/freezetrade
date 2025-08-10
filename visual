@@ -10,7 +10,7 @@ local function createFrame(parent, size, pos)
 	local frame = Instance.new("Frame")
 	frame.Size = size
 	frame.Position = pos
-	frame.BackgroundColor3 = Color3.fromRGB(90, 200, 90)
+	frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20) -- Black background
 	frame.BorderSizePixel = 0
 	frame.BackgroundTransparency = 0
 	frame.Active = true
@@ -33,8 +33,8 @@ local function createToggle(parent, labelText)
 
 	local label = Instance.new("TextLabel")
 	label.Text = labelText
-	label.Font = Enum.Font.Arcade
-	label.TextSize = 22
+	label.Font = Enum.Font.Gotham
+	label.TextSize = 20
 	label.TextColor3 = Color3.new(1, 1, 1)
 	label.BackgroundTransparency = 1
 	label.Size = UDim2.new(0.7, 0, 1, 0)
@@ -43,11 +43,11 @@ local function createToggle(parent, labelText)
 
 	local button = Instance.new("TextButton")
 	button.Text = "OFF"
-	button.Font = Enum.Font.Arcade
-	button.TextSize = 20
+	button.Font = Enum.Font.Gotham
+	button.TextSize = 18
 	button.Size = UDim2.new(0.3, -10, 1, 0)
 	button.Position = UDim2.new(0.7, 10, 0, 0)
-	button.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+	button.BackgroundColor3 = Color3.fromRGB(130, 0, 160) -- Purple OFF
 	button.TextColor3 = Color3.new(1, 1, 1)
 	button.Parent = container
 
@@ -60,10 +60,10 @@ local function createToggle(parent, labelText)
 		toggled = not toggled
 		if toggled then
 			button.Text = "ON"
-			button.BackgroundColor3 = Color3.fromRGB(60, 200, 90)
+			button.BackgroundColor3 = Color3.fromRGB(180, 70, 255) -- Lighter Purple ON
 		else
 			button.Text = "OFF"
-			button.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+			button.BackgroundColor3 = Color3.fromRGB(130, 0, 160) -- Darker Purple OFF
 		end
 	end)
 
@@ -71,19 +71,7 @@ local function createToggle(parent, labelText)
 end
 
 -- Main GUI Frame (Top-Right Position)
-local mainFrame = createFrame(gui, UDim2.new(0, 320, 0, 200), UDim2.new(1, -330, 0, 10))
-mainFrame.BackgroundColor3 = Color3.fromRGB(120, 180, 120)
-
--- Pixel Grass Texture Background
-local texture = Instance.new("ImageLabel")
-texture.Size = UDim2.new(1, 0, 1, 0)
-texture.Position = UDim2.new(0, 0, 0, 0)
-texture.BackgroundTransparency = 1
-texture.Image = "rbxassetid://15287329949"  -- Pixel grass block texture
-texture.ScaleType = Enum.ScaleType.Tile
-texture.TileSize = UDim2.new(0, 64, 0, 64)
-texture.ZIndex = -1
-texture.Parent = mainFrame
+local mainFrame = createFrame(gui, UDim2.new(0, 320, 0, 220), UDim2.new(1, -330, 0, 10))
 
 -- Layout and Padding
 local layout = Instance.new("UIListLayout")
@@ -99,17 +87,17 @@ padding.PaddingRight = UDim.new(0, 10)
 padding.PaddingBottom = UDim.new(0, 10)
 padding.Parent = mainFrame
 
+-- Title Label at the Top
+local title = Instance.new("TextLabel")
+title.Text = "Script Made by - HANZSCRIPTS"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+title.TextColor3 = Color3.new(1, 1, 1)
+title.BackgroundTransparency = 1
+title.Size = UDim2.new(1, 0, 0, 30)
+title.TextXAlignment = Enum.TextXAlignment.Center
+title.Parent = mainFrame
+
 -- Add Toggles
 createToggle(mainFrame, "Auto Freeze")
 createToggle(mainFrame, "Auto Accept")
-
--- Signature Label
-local signature = Instance.new("TextLabel")
-signature.Text = "Script Made by - HANZSCRIPTS"
-signature.Font = Enum.Font.Arcade
-signature.TextSize = 18
-signature.TextColor3 = Color3.new(1, 1, 1)
-signature.BackgroundTransparency = 1
-signature.Size = UDim2.new(1, 0, 0, 30)
-signature.TextXAlignment = Enum.TextXAlignment.Center
-signature.Parent = mainFrame
