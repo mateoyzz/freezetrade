@@ -1,64 +1,113 @@
--- GUI Setup
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "GAGGui"
-screenGui.ResetOnSpawn = false
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- LocalScript in StarterGui
 
--- Main Frame
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 250, 0, 150)
-mainFrame.Position = UDim2.new(0.5, -125, 0.5, -75)
-mainFrame.BackgroundColor3 = Color3.fromRGB(139, 69, 19) -- Dirt brown
-mainFrame.BorderSizePixel = 0
-mainFrame.Active = true
-mainFrame.Draggable = true
-mainFrame.Parent = screenGui
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "GrowAGardenGUI"
+gui.ResetOnSpawn = false
 
--- Grass Top Bar
-local grassTop = Instance.new("Frame")
-grassTop.Size = UDim2.new(1, 0, 0, 30)
-grassTop.BackgroundColor3 = Color3.fromRGB(34, 139, 34) -- Grass green
-grassTop.BorderSizePixel = 0
-grassTop.Parent = mainFrame
+-- Custom UI styling
+local function createFrame(parent, size, pos)
+	local frame = Instance.new("Frame")
+	frame.Size = size
+	frame.Position = pos
+	frame.BackgroundColor3 = Color3.fromRGB(90, 200, 90)
+	frame.BorderSizePixel = 0
+	frame.BackgroundTransparency = 0
+	frame.Parent = parent
 
--- Title
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0, 30)
-title.BackgroundTransparency = 1
-title.Text = "Script made by - HANZSCRIPTS"
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.Font = Enum.Font.SourceSansBold
-title.TextSize = 16
-title.Parent = grassTop
+	local uicorner = Instance.new("UICorner")
+	uicorner.CornerRadius = UDim.new(0, 8)
+	uicorner.Parent = frame
 
--- Function to create toggle buttons
-local function createToggleButton(name, position, parent)
-	local button = Instance.new("TextButton")
-	button.Name = name
-	button.Size = UDim2.new(0, 200, 0, 40)
-	button.Position = position
-	button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- OFF state (red)
-	button.TextColor3 = Color3.fromRGB(255, 255, 255)
-	button.Font = Enum.Font.SourceSansBold
-	button.TextSize = 18
-	button.Text = name .. " (OFF)"
-	button.Parent = parent
-
-	local isOn = false
-	button.MouseButton1Click:Connect(function()
-		isOn = not isOn
-		button.BackgroundColor3 = isOn and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-		button.Text = name .. (isOn and " (ON)" or " (OFF)")
-
-		-- Add your actual logic for Freeze Trade / Auto Accept here
-		if name == "Freeze Trade" then
-			print("Freeze Trade is now", isOn and "ON" or "OFF")
-		elseif name == "Auto Accept" then
-			print("Auto Accept is now", isOn and "ON" or "OFF")
-		end
-	end)
+	return frame
 end
 
--- Create Buttons
-createToggleButton("Freeze Trade", UDim2.new(0, 25, 0, 40), mainFrame)
-createToggleButton("Auto Accept", UDim2.new(0, 25, 0, 90), mainFrame)
+-- Toggle Button
+local function createToggle(parent, labelText)
+	local container = Instance.new("Frame")
+	container.Size = UDim2.new(0, 300, 0, 50)
+	container.BackgroundTransparency = 1
+	container.Parent = parent
+
+	local label = Instance.new("TextLabel")
+	label.Text = labelText
+	label.Font = Enum.Font.Arcade
+	label.TextSize = 22
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.BackgroundTransparency = 1
+	label.Size = UDim2.new(0.7, 0, 1, 0)
+	label.TextXAlignment = Enum.TextXAlignment.Left
+	label.Parent = container
+
+	local button = Instance.new("TextButton")
+	button.Text = "OFF"
+	button.Font = Enum.Font.Arcade
+	button.TextSize = 20
+	button.Size = UDim2.new(0.3, -10, 1, 0)
+	button.Position = UDim2.new(0.7, 10, 0, 0)
+	button.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+	button.TextColor3 = Color3.new(1, 1, 1)
+	button.Parent = container
+
+	local uicorner = Instance.new("UICorner")
+	uicorner.CornerRadius = UDim.new(0, 6)
+	uicorner.Parent = button
+
+	local toggled = false
+	button.MouseButton1Click:Connect(function()
+		toggled = not toggled
+		if toggled then
+			button.Text = "ON"
+			button.BackgroundColor3 = Color3.fromRGB(60, 200, 90)
+		else
+			button.Text = "OFF"
+			button.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
+		end
+	end)
+
+	return container
+end
+
+-- Background Frame
+local mainFrame = createFrame(gui, UDim2.new(0, 320, 0, 160), UDim2.new(0.05, 0, 0.4, 0))
+mainFrame.BackgroundColor3 = Color3.fromRGB(120, 180, 120)
+
+-- Pixel Grass Texture
+local texture = Instance.new("ImageLabel")
+texture.Size = UDim2.new(1, 0, 1, 0)
+texture.Position = UDim2.new(0, 0, 0, 0)
+texture.BackgroundTransparency = 1
+texture.Image = "rbxassetid://1095708"  -- Placeholder texture (you can replace with a good pixel grass texture)
+texture.ImageTransparency = 0.1
+texture.ScaleType = Enum.ScaleType.Tile
+texture.TileSize = UDim2.new(0, 64, 0, 64)
+texture.Parent = mainFrame
+
+-- UI elements
+local layout = Instance.new("UIListLayout")
+layout.FillDirection = Enum.FillDirection.Vertical
+layout.VerticalAlignment = Enum.VerticalAlignment.Top
+layout.Padding = UDim.new(0, 10)
+layout.Parent = mainFrame
+
+local padding = Instance.new("UIPadding")
+padding.PaddingTop = UDim.new(0, 10)
+padding.PaddingLeft = UDim.new(0, 10)
+padding.PaddingRight = UDim.new(0, 10)
+padding.PaddingBottom = UDim.new(0, 10)
+padding.Parent = mainFrame
+
+-- Toggles
+local autoFreeze = createToggle(mainFrame, "Auto Freeze")
+local autoAccept = createToggle(mainFrame, "Auto Accept")
+
+-- Signature Text
+local signature = Instance.new("TextLabel")
+signature.Text = "Script Made by - HANZSCRIPTS"
+signature.Font = Enum.Font.Arcade
+signature.TextSize = 18
+signature.TextColor3 = Color3.new(1, 1, 1)
+signature.BackgroundTransparency = 1
+signature.Size = UDim2.new(1, 0, 0, 30)
+signature.TextXAlignment = Enum.TextXAlignment.Center
+signature.Parent = mainFrame
