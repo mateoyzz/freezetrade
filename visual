@@ -1,0 +1,64 @@
+-- GUI Setup
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "GAGGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Main Frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 250, 0, 150)
+mainFrame.Position = UDim2.new(0.5, -125, 0.5, -75)
+mainFrame.BackgroundColor3 = Color3.fromRGB(139, 69, 19) -- Dirt brown
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+-- Grass Top Bar
+local grassTop = Instance.new("Frame")
+grassTop.Size = UDim2.new(1, 0, 0, 30)
+grassTop.BackgroundColor3 = Color3.fromRGB(34, 139, 34) -- Grass green
+grassTop.BorderSizePixel = 0
+grassTop.Parent = mainFrame
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundTransparency = 1
+title.Text = "Script made by - HANZSCRIPTS"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 16
+title.Parent = grassTop
+
+-- Function to create toggle buttons
+local function createToggleButton(name, position, parent)
+	local button = Instance.new("TextButton")
+	button.Name = name
+	button.Size = UDim2.new(0, 200, 0, 40)
+	button.Position = position
+	button.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- OFF state (red)
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	button.Font = Enum.Font.SourceSansBold
+	button.TextSize = 18
+	button.Text = name .. " (OFF)"
+	button.Parent = parent
+
+	local isOn = false
+	button.MouseButton1Click:Connect(function()
+		isOn = not isOn
+		button.BackgroundColor3 = isOn and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+		button.Text = name .. (isOn and " (ON)" or " (OFF)")
+
+		-- Add your actual logic for Freeze Trade / Auto Accept here
+		if name == "Freeze Trade" then
+			print("Freeze Trade is now", isOn and "ON" or "OFF")
+		elseif name == "Auto Accept" then
+			print("Auto Accept is now", isOn and "ON" or "OFF")
+		end
+	end)
+end
+
+-- Create Buttons
+createToggleButton("Freeze Trade", UDim2.new(0, 25, 0, 40), mainFrame)
+createToggleButton("Auto Accept", UDim2.new(0, 25, 0, 90), mainFrame)
