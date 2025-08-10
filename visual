@@ -5,7 +5,7 @@ local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 gui.Name = "GrowAGardenGUI"
 gui.ResetOnSpawn = false
 
--- Custom UI styling
+-- Create the main draggable frame
 local function createFrame(parent, size, pos)
 	local frame = Instance.new("Frame")
 	frame.Size = size
@@ -13,6 +13,8 @@ local function createFrame(parent, size, pos)
 	frame.BackgroundColor3 = Color3.fromRGB(90, 200, 90)
 	frame.BorderSizePixel = 0
 	frame.BackgroundTransparency = 0
+	frame.Active = true
+	frame.Draggable = true
 	frame.Parent = parent
 
 	local uicorner = Instance.new("UICorner")
@@ -22,7 +24,7 @@ local function createFrame(parent, size, pos)
 	return frame
 end
 
--- Toggle Button
+-- Toggle Button (Auto Freeze / Auto Accept)
 local function createToggle(parent, labelText)
 	local container = Instance.new("Frame")
 	container.Size = UDim2.new(0, 300, 0, 50)
@@ -68,22 +70,22 @@ local function createToggle(parent, labelText)
 	return container
 end
 
--- Background Frame
-local mainFrame = createFrame(gui, UDim2.new(0, 320, 0, 160), UDim2.new(0.05, 0, 0.4, 0))
+-- Main GUI Frame (Top-Right Position)
+local mainFrame = createFrame(gui, UDim2.new(0, 320, 0, 200), UDim2.new(1, -330, 0, 10))
 mainFrame.BackgroundColor3 = Color3.fromRGB(120, 180, 120)
 
--- Pixel Grass Texture
+-- Pixel Grass Texture Background
 local texture = Instance.new("ImageLabel")
 texture.Size = UDim2.new(1, 0, 1, 0)
 texture.Position = UDim2.new(0, 0, 0, 0)
 texture.BackgroundTransparency = 1
-texture.Image = "rbxassetid://1095708"  -- Placeholder texture (you can replace with a good pixel grass texture)
-texture.ImageTransparency = 0.1
+texture.Image = "rbxassetid://15287329949"  -- Pixel grass block texture
 texture.ScaleType = Enum.ScaleType.Tile
 texture.TileSize = UDim2.new(0, 64, 0, 64)
+texture.ZIndex = -1
 texture.Parent = mainFrame
 
--- UI elements
+-- Layout and Padding
 local layout = Instance.new("UIListLayout")
 layout.FillDirection = Enum.FillDirection.Vertical
 layout.VerticalAlignment = Enum.VerticalAlignment.Top
@@ -97,11 +99,11 @@ padding.PaddingRight = UDim.new(0, 10)
 padding.PaddingBottom = UDim.new(0, 10)
 padding.Parent = mainFrame
 
--- Toggles
-local autoFreeze = createToggle(mainFrame, "Auto Freeze")
-local autoAccept = createToggle(mainFrame, "Auto Accept")
+-- Add Toggles
+createToggle(mainFrame, "Auto Freeze")
+createToggle(mainFrame, "Auto Accept")
 
--- Signature Text
+-- Signature Label
 local signature = Instance.new("TextLabel")
 signature.Text = "Script Made by - HANZSCRIPTS"
 signature.Font = Enum.Font.Arcade
